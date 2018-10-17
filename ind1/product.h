@@ -20,7 +20,8 @@ public:
 	void set_price(size_t a) { price=a; }
 	void print_all() { cout << name_product << " " << quantity << price << endl; }
 	void set_all(string a, size_t b, size_t c) { name_product = a; quantity = b; price=c;}
-	
+	friend ostream &operator<<(std::ostream &os, const product &p);
+	friend istream &operator>>(std::istream &is, product &p);
 };
 
 class stock
@@ -44,7 +45,7 @@ public:
 			product_in_stok[i] = product_in_stok1[i];
 	}
 
-	stock(const stock & d) :name(name), size(size)
+	stock(const stock & d) :name(d.name), size(d.size)
 	{
 		product_in_stok = new product[size];
 		for (int i = 0; i < size; ++i)
@@ -80,9 +81,57 @@ public:
 		return false;
 	}
 	
+	friend ostream &operator<<(std::ostream &os, stock a)
+	{
+		os << a.name << a.size;
+		for (int i = 0; i < a.size; ++i) os << a.product_in_stok[i];
+		return os;
+	}
 
+	friend  istream&operator>>(std::istream &is, stock &a)
+	{
+		is >> a.name >> a.size;
+		for (int i = 0; i < a.size; ++i) is >> a.product_in_stok[i];
+		return is;
+	}
+
+	bool operator==(const stock &a)
+	{
+		return size == a.size;
+	}
+	bool operator<(const stock &a)
+	{
+		return size < a.size;
+	}
+	bool operator>(const stock &a)
+	{
+		return size > a.size;
+	}
+
+	stock operator=(const stock & d)
+	{
+		size = d.size;
+		name = d.name;
+		if (product_in_stok) delete[] product_in_stok;
+		product_in_stok = new product[size];
+		for (int i = 0; i < size; ++i)
+			product_in_stok[i] = d.product_in_stok[i];
+		return *this;
+	}
 	friend stock all_sozd();
 };
+
+inline ostream & operator<<(std::ostream & os, const product & p)
+{
+	os << p.get_name_product() << p.get_price() << p.get_quantity();
+	return os;
+}
+
+inline istream & operator>>(std::istream & is, product & p)
+{
+	is >> p.name_product >> p.quantity >> p.price;
+	return is;
+}
 
 stock all_sozd()
 {
