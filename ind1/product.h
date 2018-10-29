@@ -27,9 +27,9 @@ public:
 class stock
 {
 private:
-	string name;//èìÿ ñêëàäà
-	size_t size;//ñêîëüêî òàì õðîíèòüñÿ äîáðà
-	product *product_in_stok;//ñàìî äîáðî 
+	string name;//Ã¨Ã¬Ã¿ Ã±ÃªÃ«Ã Ã¤Ã 
+	size_t size;//Ã±ÃªÃ®Ã«Ã¼ÃªÃ® Ã²Ã Ã¬ ÃµÃ°Ã®Ã­Ã¨Ã²Ã¼Ã±Ã¿ Ã¤Ã®Ã¡Ã°Ã 
+	product *product_in_stok;//Ã±Ã Ã¬Ã® Ã¤Ã®Ã¡Ã°Ã® 
 public:
 	stock(string name="", size_t size=1) :name(name), size(size)
 	{
@@ -91,6 +91,8 @@ public:
 	friend  istream&operator>>(std::istream &is, stock &a)
 	{
 		is >> a.name >> a.size;
+		delete[]a.product_in_stok;
+		a.product_in_stok = new product[a.size];
 		for (int i = 0; i < a.size; ++i) is >> a.product_in_stok[i];
 		return is;
 	}
@@ -129,6 +131,7 @@ inline ostream & operator<<(std::ostream & os, const product & p)
 
 inline istream & operator>>(std::istream & is, product & p)
 {
+	
 	is >> p.name_product >> p.quantity >> p.price;
 	return is;
 }
@@ -137,15 +140,15 @@ stock all_sozd()
 {
 	string name;
 	size_t size, size1;
-	cout << "Ââèäèòå èìÿ ñêëàäà ";
+	cout << "Ã‚Ã¢Ã¨Ã¤Ã¨Ã²Ã¥ Ã¨Ã¬Ã¿ Ã±ÃªÃ«Ã Ã¤Ã  ";
 	cin >> name;
-	cout << " ââèäèòå êîëè÷åñòâî òîâàðà ";
+	cout << " Ã¢Ã¢Ã¨Ã¤Ã¨Ã²Ã¥ ÃªÃ®Ã«Ã¨Ã·Ã¥Ã±Ã²Ã¢Ã® Ã²Ã®Ã¢Ã Ã°Ã  ";
 	cin >> size;
 	cout << endl;
 	stock all(name, size);
 	for (int i = 0; i < size; ++i)
 	{
-		cout << "Ââèäèòå èìÿ òîâàðà, êîëè÷åñòâî, ÷åíó ";
+		cout << "Ã‚Ã¢Ã¨Ã¤Ã¨Ã²Ã¥ Ã¨Ã¬Ã¿ Ã²Ã®Ã¢Ã Ã°Ã , ÃªÃ®Ã«Ã¨Ã·Ã¥Ã±Ã²Ã¢Ã®, Ã·Ã¥Ã­Ã³ ";
 		cin >> name >> size >> size1;
 		all.product_in_stok[i].set_all(name, size, size1);
 	}
